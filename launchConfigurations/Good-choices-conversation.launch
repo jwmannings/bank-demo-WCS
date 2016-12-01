@@ -1,0 +1,20 @@
+{
+  "ServiceId": "com.ibm.cloudoe.orion.client.deploy",
+  "Params": {
+    "Target": {
+      "Url": "https://api.au-syd.bluemix.net",
+      "Org": "<fill>",
+      "Space": "<fill>"
+    },
+    "Name": "<fill>",
+    "Instrumentation": {
+      "host": "<fill>",
+      "domain": "au-syd.mybluemix.net",
+      "services": [
+        "Conversation-1v"
+      ]
+    }
+  },
+  "Path": "manifest.yml",
+  "Type": "Cloud Foundry"
+}

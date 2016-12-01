@@ -1,0 +1,10 @@
+
+<a href="{{ model.url }}" target="_blank"><div class="card " ng-class="{heroCard: model.Hero == true, defaultCard: model.Hero == false}">
+    <img src="../img/hero_home.jpg" class="heroImage" ng-if="model.Hero == true" />
+	<h2 class="title">{{ model.title }}</h2>
+	<p class="description">{{ model.description }}</p>
+    <div class="moreLink">Read more...</div>
+	<!--<a class="cardURL" href="{{ model.url }}" target="_blank"></a>-->
+    <img src="../img/share.svg" class="icon iconShare">
+    <img src="../img/favourite.svg" class="icon iconFavourite">
+</div></a>

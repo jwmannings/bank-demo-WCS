@@ -1,0 +1,61 @@
+<html>
+
+<head>
+    <!-- <base href="/"> -->
+    <title>Bank Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta property="og:image" content="conversation.svg" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/app.css">
+    <!-- Include the AngularJS library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</head>
+
+<body ng-app="GoodChoicesApp">
+    <div id="view-change-button" class="button" onclick="PayloadPanel.togglePanel(event, this)"> <img class="option full" src="../img/Chat Button.png"> <img class="option not-full" src="../img/Code Button.png"> </div>
+    <div id="contentParent" class="responsive-columns-wrapper">
+        <div id="chat-column-holder" class="responsive-column content-column">
+            <div class="chat-column">
+                <div class="chat-background">
+                    <div class="chat-person"></div>
+                    <div id="chat-response" class="chat-response">What would you like to explore?</div>
+                    <div class="chat-input">
+                        <label for="textInput" class="inputOutline">
+                            <input id="textInput" class="input responsive-column" placeholder="Type here" type="text" onkeydown="ConversationPanel.inputKeyDown(event, this)"> </label>
+                    </div>
+                </div>
+                <div id="responseContent" ng-controller="ContentController">
+                    <div class="watsonCards" ng-repeat="tile in tiles | watsonFilterHero: filteredValue as filteredResults">
+                        <div class="findingsHeading" ng-if="$first">Here’s the page I recommend...</div>
+                        <cms-content ng-model="tile"> </cms-content>
+                    </div>
+                    <div class="watsonCards" ng-repeat="tile in tiles | watsonFilterDefault: filteredValue as filteredResults">
+                        <div class="findingsHeading" ng-if="$first">Here’s some potential matches I found...</div>
+                        <div class="findingsHeading" ng-if="tile.FlagA == 'true'"> Have you considered?</div>
+                        <cms-content ng-model="tile"> </cms-content>
+                    </div>
+                    <p class="findingsHeading" ng-show="!filteredResults.length" style="text-align: center;">I’ve been trained on home loans and home insurance <br><br> Please ask me any questions about these topics...</p>
+                </div>
+            </div>
+        </div>
+        <div id="payload-column" class="fixed-column content-column">
+            <div id="payload-initial-message"> Type something to see the watson interactions </div>
+            <div id="payload-request" class="payload"></div>
+            <div id="payload-response" class="payload"></div>
+        </div>
+    </div>
+    <script src="js/app.js"></script>
+    <script src="js/snap.svg-min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/conversation.js"></script>
+    <script src="js/payload.js"></script>
+    <script src="js/global.js"></script>
+    <script src="js/services/content.js"></script>
+    <script src="js/controller/ContentController.js"></script>
+    <script src="js/directives/cmsContent.js"></script>
+</body>
+
+</html>
