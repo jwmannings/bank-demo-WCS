@@ -1,21 +1,3 @@
-/**
- * Copyright 2015 IBM Corp. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
- /*TEST PUSH, Kreitals*/
-
 'use strict';
 
 require( 'dotenv' ).config( {silent: true} );
@@ -24,16 +6,12 @@ var express = require( 'express' );  // app server
 var bodyParser = require( 'body-parser' );  // parser for post requests
 var watson = require( 'watson-developer-cloud' );  // watson sdk
 
-// The following requires are needed for logging purposes
 var uuid = require( 'uuid' );
 var vcapServices = require( 'vcap_services' );
 var basicAuth = require( 'basic-auth-connect' );
 //var port = (process.env.VCAP_APP_PORT || 8080);
 
-// The app owner may optionally configure a cloudand db to track user input.
-// This cloudand db is not required, the app will operate without it.
-// If logging is enabled the app must also enable basic auth to secure logging
-// endpoints
+
 var cloudantCredentials = vcapServices.getCredentials( 'cloudantNoSQLDB' );
 var cloudantUrl = null;
 if ( cloudantCredentials ) {
@@ -47,7 +25,7 @@ var app = express();
 app.use( express.static( './public' ) ); // load UI from public folder
 app.use( bodyParser.json() );
 
-// Create the service wrapper
+// Service wrapper
 var conversation = watson.conversation( {
   url: 'https://gateway.watsonplatform.net/conversation/api',
   username: process.env.CONVERSATION_USERNAME || 'wxz1Bk2olH5N',
@@ -65,7 +43,7 @@ app.post( '/api/message', function(req, res) {
         'text': 'The app has not been configured with a <b>WORKSPACE_ID</b> environment variable. Please refer to the ' +
         '<a href="https://github.com/watson-developer-cloud/conversation-simple">README</a> documentation on how to set this variable. <br>' +
         'Once a workspace has been defined the intents may be imported from ' +
-        '<a href="https://github.com/watson-developer-cloud/conversation-simple/blob/master/training/car_workspace.json">here</a> in order to get a working application.'
+        ''
       }
     } );
   }
@@ -113,11 +91,6 @@ function updateMessage(input, response) {
   }
   if ( response.intents && response.intents[0] ) {
     var intent = response.intents[0];
-    // Depending on the confidence of the response the app can return different messages.
-    // The confidence will vary depending on how well the system is trained. The service will always try to assign
-    // a class/intent to the input. If the confidence is low, then it suggests the service is unsure of the
-    // user's intent . In these cases it is usually best to return a disambiguation message
-    // ('I did not understand your intent, please rephrase your question', etc..)
     if ( intent.confidence >= 0.75 ) {
       responseText = 'I understood your intent was ' + intent.intent;
     } else if ( intent.confidence >= 0.5 ) {
@@ -136,8 +109,6 @@ function updateMessage(input, response) {
 }
 
 if ( cloudantUrl ) {
-  // If logging has been enabled (as signalled by the presence of the cloudantUrl) then the
-  // app developer must also specify a LOG_USER and LOG_PASS env vars.
   if ( !process.env.LOG_USER || !process.env.LOG_PASS ) {
     throw new Error( 'LOG_USER OR LOG_PASS not defined, both required to enable logging!' );
   }

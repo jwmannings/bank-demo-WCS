@@ -7,6 +7,6 @@ applications:
   host: Goodchoices
   disk_quota: 1024M
   services:
-  - Conversation-good-choices
+  - Conversation-api
   env:
     WORKSPACE_ID: d0154dac-20ed-48fb-ac4e-7963606b3f31
